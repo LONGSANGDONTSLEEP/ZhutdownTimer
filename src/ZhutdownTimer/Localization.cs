@@ -1,0 +1,223 @@
+using System.Collections.Generic;
+
+namespace ZhutdownTimer
+{
+    internal static class L
+    {
+        private static readonly Dictionary<string, string> Chinese = new Dictionary<string, string>
+        {
+            { "AppTitle", "定时电源助手" },
+            { "Subtitle", "更安心地安排电脑电源操作" },
+            { "Action", "执行操作" },
+            { "Schedule", "计划方式" },
+            { "Countdown", "倒计时" },
+            { "Clock", "指定时刻" },
+            { "Repeat", "重复规则" },
+            { "Hours", "小时" },
+            { "Minutes", "分钟" },
+            { "Seconds", "秒" },
+            { "Options", "安全与运行选项" },
+            { "ForceClose", "强制关闭未响应程序" },
+            { "PreventSleep", "倒计时期间阻止系统睡眠" },
+            { "AlwaysOnTop", "倒计时期间窗口置顶" },
+            { "StartWithWindows", "随 Windows 启动" },
+            { "StartMinimized", "启动时最小化到托盘" },
+            { "Confirm", "执行前确认" },
+            { "ConfirmOff", "不确认" },
+            { "ConfirmSeconds", "{0} 秒" },
+            { "Start", "启动计划" },
+            { "Cancel", "取消计划" },
+            { "Idle", "等待创建计划" },
+            { "Running", "计划运行中" },
+            { "Restored", "已恢复上次计划" },
+            { "Remaining", "剩余时间" },
+            { "NextAction", "下一项操作" },
+            { "TargetTime", "计划时间：{0}" },
+            { "OneTimeHint", "一次性计划完成后会自动清除。" },
+            { "RecurringHint", "重复计划需要程序保持运行；建议同时开启“随 Windows 启动”。" },
+            { "SafetyHint", "默认会在执行前再次确认，避免误操作。请提前保存工作。" },
+            { "History", "历史记录" },
+            { "Minimize", "隐藏到托盘" },
+            { "About", "关于" },
+            { "Chinese", "中文" },
+            { "English", "English" },
+            { "ThemeSystem", "跟随系统" },
+            { "ThemeLight", "浅色" },
+            { "ThemeDark", "深色" },
+            { "Once", "仅一次" },
+            { "Daily", "每天" },
+            { "Weekdays", "工作日" },
+            { "Weekends", "周末" },
+            { "Shutdown", "关机" },
+            { "Restart", "重启" },
+            { "Sleep", "睡眠" },
+            { "Hibernate", "休眠" },
+            { "Lock", "锁定" },
+            { "SignOut", "注销" },
+            { "TrayShow", "显示主窗口" },
+            { "TrayCancel", "取消当前计划" },
+            { "TrayHistory", "查看历史记录" },
+            { "TrayExit", "退出" },
+            { "StartedBalloon", "计划已启动" },
+            { "CancelledBalloon", "计划已取消" },
+            { "CancelledBody", "不会执行本次电源操作。" },
+            { "ConfirmTitle", "即将执行 {0}" },
+            { "ConfirmBody", "电脑将在 {0} 秒后执行操作。\n请保存未完成的工作。" },
+            { "ExecuteNow", "立即执行" },
+            { "SkipThisTime", "跳过本次" },
+            { "ConfirmExit", "当前计划仍在运行。退出会停止计划，确定退出吗？" },
+            { "Question", "请确认" },
+            { "InvalidDuration", "倒计时至少需要 1 秒。" },
+            { "ErrorTitle", "操作失败" },
+            { "StartFailed", "无法启动计划：{0}" },
+            { "ExecuteFailed", "无法执行操作：{0}" },
+            { "HistoryTitle", "计划历史" },
+            { "Time", "时间" },
+            { "Result", "结果" },
+            { "Details", "详情" },
+            { "NoHistory", "还没有历史记录" },
+            { "OpenDataFolder", "打开数据目录" },
+            { "ClearHistory", "清空记录" },
+            { "ClearHistoryConfirm", "确定清空全部历史记录吗？" },
+            { "Close", "关闭" },
+            { "AboutTitle", "关于定时电源助手" },
+            { "AboutBody", "一款精致、可靠、完全离线的 Windows 定时电源工具。\n\n不联网，不收集遥测数据。" },
+            { "Version", "版本 {0}" },
+            { "SourceCode", "查看 GitHub 源码" },
+            { "License", "MIT 开源许可" },
+            { "Executed", "已执行" },
+            { "Cancelled", "已取消" },
+            { "Skipped", "已跳过" },
+            { "Failed", "失败" },
+            { "Missed", "已错过" },
+            { "DryRun", "模拟执行" },
+            { "ManualCancel", "用户取消了计划" },
+            { "ConfirmationCancel", "用户在最终确认时跳过" },
+            { "MissedDetail", "程序启动时计划时间已经过去，出于安全考虑未补执行" },
+            { "DryRunDetail", "命令行模拟模式，未调用系统电源操作" },
+            { "SettingsSaved", "设置已保存" },
+            { "Footer", "本地运行 · 无遥测 · MIT 开源" }
+        };
+
+        private static readonly Dictionary<string, string> English = new Dictionary<string, string>
+        {
+            { "AppTitle", "Zhutdown Timer" },
+            { "Subtitle", "Schedule PC power actions with confidence" },
+            { "Action", "Power action" },
+            { "Schedule", "Schedule type" },
+            { "Countdown", "Countdown" },
+            { "Clock", "Time of day" },
+            { "Repeat", "Repeat" },
+            { "Hours", "hr" },
+            { "Minutes", "min" },
+            { "Seconds", "sec" },
+            { "Options", "Safety & runtime options" },
+            { "ForceClose", "Force-close apps" },
+            { "PreventSleep", "Prevent sleep" },
+            { "AlwaysOnTop", "Keep countdown on top" },
+            { "StartWithWindows", "Start with Windows" },
+            { "StartMinimized", "Start minimized to tray" },
+            { "Confirm", "Final confirmation" },
+            { "ConfirmOff", "No confirmation" },
+            { "ConfirmSeconds", "{0} seconds" },
+            { "Start", "Start schedule" },
+            { "Cancel", "Cancel" },
+            { "Idle", "Ready" },
+            { "Running", "Schedule is running" },
+            { "Restored", "Previous schedule restored" },
+            { "Remaining", "Time remaining" },
+            { "NextAction", "Next action" },
+            { "TargetTime", "Scheduled for {0}" },
+            { "OneTimeHint", "A one-time schedule is cleared after it runs." },
+            { "RecurringHint", "Recurring schedules need the app running. Enabling “Start with Windows” is recommended." },
+            { "SafetyHint", "A final confirmation is enabled by default. Save your work before the timer ends." },
+            { "History", "History" },
+            { "Minimize", "Hide to tray" },
+            { "About", "About" },
+            { "Chinese", "中文" },
+            { "English", "English" },
+            { "ThemeSystem", "System" },
+            { "ThemeLight", "Light" },
+            { "ThemeDark", "Dark" },
+            { "Once", "Once" },
+            { "Daily", "Daily" },
+            { "Weekdays", "Weekdays" },
+            { "Weekends", "Weekends" },
+            { "Shutdown", "Shut down" },
+            { "Restart", "Restart" },
+            { "Sleep", "Sleep" },
+            { "Hibernate", "Hibernate" },
+            { "Lock", "Lock" },
+            { "SignOut", "Sign out" },
+            { "TrayShow", "Show main window" },
+            { "TrayCancel", "Cancel current schedule" },
+            { "TrayHistory", "View history" },
+            { "TrayExit", "Exit" },
+            { "StartedBalloon", "Schedule started" },
+            { "CancelledBalloon", "Schedule cancelled" },
+            { "CancelledBody", "No power action will be performed." },
+            { "ConfirmTitle", "About to {0}" },
+            { "ConfirmBody", "The PC will perform this action in {0} seconds.\nSave any unfinished work now." },
+            { "ExecuteNow", "Run now" },
+            { "SkipThisTime", "Skip this time" },
+            { "ConfirmExit", "A schedule is still running. Exiting will stop it. Continue?" },
+            { "Question", "Confirm" },
+            { "InvalidDuration", "The countdown must be at least one second." },
+            { "ErrorTitle", "Action failed" },
+            { "StartFailed", "Could not start the schedule: {0}" },
+            { "ExecuteFailed", "Could not perform the action: {0}" },
+            { "HistoryTitle", "Schedule history" },
+            { "Time", "Time" },
+            { "Result", "Result" },
+            { "Details", "Details" },
+            { "NoHistory", "No history yet" },
+            { "OpenDataFolder", "Open data folder" },
+            { "ClearHistory", "Clear history" },
+            { "ClearHistoryConfirm", "Clear all history entries?" },
+            { "Close", "Close" },
+            { "AboutTitle", "About Zhutdown Timer" },
+            { "AboutBody", "A polished, reliable and fully offline Windows power scheduler.\n\nNo network access. No telemetry." },
+            { "Version", "Version {0}" },
+            { "SourceCode", "View source on GitHub" },
+            { "License", "MIT open-source license" },
+            { "Executed", "Executed" },
+            { "Cancelled", "Cancelled" },
+            { "Skipped", "Skipped" },
+            { "Failed", "Failed" },
+            { "Missed", "Missed" },
+            { "DryRun", "Dry run" },
+            { "ManualCancel", "The user cancelled the schedule" },
+            { "ConfirmationCancel", "The user skipped the final confirmation" },
+            { "MissedDetail", "The scheduled time had passed when the app started; it was not run for safety" },
+            { "DryRunDetail", "Command-line dry-run mode; no system power action was called" },
+            { "SettingsSaved", "Settings saved" },
+            { "Footer", "Local only · No telemetry · MIT licensed" }
+        };
+
+        public static AppLanguage Language { get; set; }
+
+        public static string T(string key)
+        {
+            Dictionary<string, string> source = Language == AppLanguage.English ? English : Chinese;
+            string value;
+            return source.TryGetValue(key, out value) ? value : key;
+        }
+
+        public static string Action(PowerAction action) { return T(action.ToString()); }
+        public static string Repeat(RepeatMode repeat) { return T(repeat.ToString()); }
+
+        public static string Theme(AppTheme theme)
+        {
+            if (theme == AppTheme.Light) return T("ThemeLight");
+            if (theme == AppTheme.Dark) return T("ThemeDark");
+            return T("ThemeSystem");
+        }
+
+        public static string Result(string code)
+        {
+            if (string.IsNullOrEmpty(code)) return string.Empty;
+            string normalized = char.ToUpperInvariant(code[0]) + code.Substring(1);
+            return T(normalized);
+        }
+    }
+}
