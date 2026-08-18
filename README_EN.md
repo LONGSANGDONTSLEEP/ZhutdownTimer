@@ -35,6 +35,9 @@ Open [the latest GitHub Release](https://github.com/LONGSANGDONTSLEEP/ZhutdownTi
 
 Requirements: Windows 10/11 and .NET Framework 4.8.
 
+> [!NOTE]
+> Release binaries are not yet signed with a commercial code-signing certificate, so Windows SmartScreen may show an “Unknown publisher” warning. Download only from this repository's Releases page and verify the file against `SHA256SUMS.txt`.
+
 > [!WARNING]
 > Force-closing applications can discard unsaved work. Final confirmation is enabled by default, but you should still save your work before a schedule runs.
 
@@ -65,4 +68,3 @@ See [TESTING.md](docs/TESTING.md), [SECURITY.md](SECURITY.md) and the [Chinese R
 ## Credits and license
 
 The product concept was inspired by [Shutdown Timer Classic](https://github.com/lukaslangrock/ShutdownTimerClassic). Zhutdown Timer's code, bilingual interface, branding and implementation are independently authored. Licensed under the [MIT License](LICENSE).
-
