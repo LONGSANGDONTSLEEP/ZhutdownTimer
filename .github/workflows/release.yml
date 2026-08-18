@@ -1,0 +1,42 @@
+name: 构建与发布
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@v4
+
+      - name: 构建
+        shell: powershell
+        run: .\build.ps1
+
+      - name: 自检
+        shell: powershell
+        run: '& ".\dist\ZhutdownTimer.exe" --self-test'
+
+      - name: 打包
+        shell: powershell
+        run: Compress-Archive -Path '.\dist\ZhutdownTimer.exe', '.\README.md', '.\LICENSE' -DestinationPath '.\ZhutdownTimer.zip'
+
+      - name: 保存构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: 定时电源助手
+          path: ZhutdownTimer.zip
+
+      - name: 创建 GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ZhutdownTimer.zip
+          generate_release_notes: true
