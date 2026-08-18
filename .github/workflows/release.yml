@@ -9,9 +9,12 @@ on:
 permissions:
   contents: write
 
+env:
+  APP_VERSION: 2.0.0
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - name: 检出源码
         uses: actions/checkout@v7
@@ -24,19 +27,52 @@ jobs:
         shell: powershell
         run: '& ".\dist\ZhutdownTimer.exe" --self-test'
 
-      - name: 打包
+      - name: 构建安装程序
         shell: powershell
-        run: Compress-Archive -Path '.\dist\ZhutdownTimer.exe', '.\README.md', '.\LICENSE' -DestinationPath '.\ZhutdownTimer.zip'
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path -LiteralPath $iscc)) { throw "Inno Setup compiler not found: $iscc" }
+          & $iscc "/DMyAppVersion=$env:APP_VERSION" ".\installer\ZhutdownTimer.iss"
+
+      - name: 验证安装程序
+        shell: powershell
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP 'ZhutdownTimer-install-test'
+          $installer = ".\dist\ZhutdownTimer-Setup-v$env:APP_VERSION.exe"
+          $install = Start-Process -FilePath $installer -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=$installDir" -Wait -PassThru -WindowStyle Hidden
+          if ($install.ExitCode -ne 0) { throw "Installer failed: $($install.ExitCode)" }
+          $installedApp = Join-Path $installDir 'ZhutdownTimer.exe'
+          $test = Start-Process -FilePath $installedApp -ArgumentList '--self-test' -Wait -PassThru -WindowStyle Hidden
+          if ($test.ExitCode -ne 0) { throw "Installed app self-test failed: $($test.ExitCode)" }
+
+      - name: 打包便携版并生成校验值
+        shell: powershell
+        run: |
+          $portable = ".\dist\ZhutdownTimer-portable-v$env:APP_VERSION.zip"
+          $installer = ".\dist\ZhutdownTimer-Setup-v$env:APP_VERSION.exe"
+          Compress-Archive -Path '.\dist\ZhutdownTimer.exe', '.\README.md', '.\README_EN.md', '.\CHANGELOG.md', '.\LICENSE' -DestinationPath $portable
+          $files = @($portable, $installer)
+          $lines = foreach ($file in $files) {
+            $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $file).Hash.ToLowerInvariant()
+            "$hash  $([IO.Path]::GetFileName($file))"
+          }
+          $lines | Set-Content -Encoding ascii '.\dist\SHA256SUMS.txt'
 
       - name: 保存构建产物
         uses: actions/upload-artifact@v7
         with:
           name: 定时电源助手
-          path: ZhutdownTimer.zip
+          path: |
+            dist/ZhutdownTimer-portable-v*.zip
+            dist/ZhutdownTimer-Setup-v*.exe
+            dist/SHA256SUMS.txt
 
       - name: 创建 GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3
         with:
-          files: ZhutdownTimer.zip
+          files: |
+            dist/ZhutdownTimer-portable-v*.zip
+            dist/ZhutdownTimer-Setup-v*.exe
+            dist/SHA256SUMS.txt
           generate_release_notes: true

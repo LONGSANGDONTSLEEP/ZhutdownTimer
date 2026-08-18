@@ -29,15 +29,29 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Controls.cs" />
+    <Compile Include="Dialogs.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="MainForm.cs" />
+    <Compile Include="Models.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Services.cs" />
     <Compile Include="TimerLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />
+    <None Include="..\..\assets\app.ico" />
+    <EmbeddedResource Include="..\..\assets\app-icon.png">
+      <LogicalName>ZhutdownTimer.AppIcon.png</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\assets\app.ico</ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

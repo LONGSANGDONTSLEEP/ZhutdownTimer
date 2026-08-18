@@ -16,9 +16,13 @@ $sourceDirectory = Join-Path $PSScriptRoot 'src\ZhutdownTimer'
 
 & $compiler /nologo /target:winexe /optimize+ /platform:anycpu `
     /win32manifest:"$sourceDirectory\app.manifest" `
-    /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll `
+    /win32icon:"$PSScriptRoot\assets\app.ico" `
+    /resource:"$PSScriptRoot\assets\app-icon.png",ZhutdownTimer.AppIcon.png `
+    /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Runtime.Serialization.dll /reference:System.Windows.Forms.dll `
     /out:"$outputFile" `
-    "$sourceDirectory\AssemblyInfo.cs" "$sourceDirectory\TimerLogic.cs" "$sourceDirectory\Program.cs"
+    "$sourceDirectory\AssemblyInfo.cs" "$sourceDirectory\Models.cs" "$sourceDirectory\Localization.cs" `
+    "$sourceDirectory\TimerLogic.cs" "$sourceDirectory\Services.cs" "$sourceDirectory\Controls.cs" `
+    "$sourceDirectory\Dialogs.cs" "$sourceDirectory\MainForm.cs" "$sourceDirectory\Program.cs"
 
 if ($LASTEXITCODE -ne 0) { throw "Build failed with exit code $LASTEXITCODE" }
 Write-Host "Build complete: $outputFile"
