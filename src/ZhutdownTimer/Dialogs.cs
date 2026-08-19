@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ZhutdownTimer
 {
-    internal sealed class ExecutionPromptForm : Form
+    internal sealed class ExecutionPromptForm : FrostedForm
     {
         private readonly Timer timer = new Timer();
         private readonly Label countdownLabel = new Label();
@@ -17,7 +17,7 @@ namespace ZhutdownTimer
         {
             secondsLeft = Math.Max(1, seconds);
             Text = string.Format(L.T("ConfirmTitle"), L.Action(action));
-            ClientSize = new Size(500, 300);
+            ClientSize = new Size(520, 330);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -25,28 +25,29 @@ namespace ZhutdownTimer
             TopMost = true;
             ShowInTaskbar = true;
             Icon = AssetLoader.LoadAppIcon();
-            Font = new Font("Microsoft YaHei UI", 9F);
+            Font = UiFonts.Create(10F, FontStyle.Regular);
+            GlassPalette = palette;
 
             var title = new Label
             {
                 Text = string.Format(L.T("ConfirmTitle"), L.Action(action)),
-                Font = new Font(Font.FontFamily, 18F, FontStyle.Bold),
+                Font = UiFonts.Create(18F, FontStyle.Bold),
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Top,
-                Height = 58
+                Height = 66
             };
-            countdownLabel.Font = new Font("Consolas", 42F, FontStyle.Bold);
+            countdownLabel.Font = new Font("Cascadia Mono", 38F, FontStyle.Bold);
             countdownLabel.AutoSize = false;
             countdownLabel.TextAlign = ContentAlignment.MiddleCenter;
             countdownLabel.Dock = DockStyle.Top;
-            countdownLabel.Height = 82;
+            countdownLabel.Height = 88;
             bodyLabel.AutoSize = false;
             bodyLabel.TextAlign = ContentAlignment.TopCenter;
             bodyLabel.Dock = DockStyle.Top;
-            bodyLabel.Height = 55;
+            bodyLabel.Height = 64;
 
-            var buttons = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = 64, Padding = new Padding(22, 8, 22, 10), ColumnCount = 2 };
+            var buttons = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = 74, Padding = new Padding(24, 10, 24, 14), ColumnCount = 2, BackColor = Color.Transparent };
             buttons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             buttons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             var skip = new ModernButton { Text = L.T("SkipThisTime"), Dock = DockStyle.Fill, Margin = new Padding(0, 0, 6, 0), Palette = palette };
@@ -61,7 +62,7 @@ namespace ZhutdownTimer
             Controls.Add(countdownLabel);
             Controls.Add(title);
             ThemeApplier.Apply(this, palette);
-            NativeTheme.ApplyDarkTitleBar(this, palette.IsDark);
+            NativeTheme.ApplyWindowEffects(this, palette.IsDark);
             title.ForeColor = palette.Text;
             countdownLabel.ForeColor = palette.Danger;
             bodyLabel.ForeColor = palette.Muted;
@@ -88,7 +89,7 @@ namespace ZhutdownTimer
         }
     }
 
-    internal sealed class HistoryForm : Form
+    internal sealed class HistoryForm : FrostedForm
     {
         private readonly SettingsStore store;
         private readonly ListView list = new ListView();
@@ -103,7 +104,8 @@ namespace ZhutdownTimer
             MinimumSize = new Size(640, 360);
             StartPosition = FormStartPosition.CenterParent;
             Icon = AssetLoader.LoadAppIcon();
-            Font = new Font("Microsoft YaHei UI", 9F);
+            Font = UiFonts.Create(9.6F, FontStyle.Regular);
+            GlassPalette = palette;
 
             list.Dock = DockStyle.Fill;
             list.View = View.Details;
@@ -115,7 +117,7 @@ namespace ZhutdownTimer
             list.Columns.Add(L.T("Result"), 100);
             list.Columns.Add(L.T("Details"), 340);
 
-            var buttons = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = 64, Padding = new Padding(16, 10, 16, 10), ColumnCount = 4 };
+            var buttons = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = 72, Padding = new Padding(18, 10, 18, 14), ColumnCount = 4, BackColor = Color.Transparent };
             buttons.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             buttons.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             buttons.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -142,8 +144,8 @@ namespace ZhutdownTimer
             Controls.Add(padding);
             Controls.Add(buttons);
             ThemeApplier.Apply(this, palette);
-            NativeTheme.ApplyDarkTitleBar(this, palette.IsDark);
-            padding.BackColor = palette.Window;
+            NativeTheme.ApplyWindowEffects(this, palette.IsDark);
+            padding.BackColor = Color.Transparent;
             list.BackColor = palette.Surface;
             list.ForeColor = palette.Text;
             RefreshItems();
@@ -166,32 +168,33 @@ namespace ZhutdownTimer
         }
     }
 
-    internal sealed class AboutForm : Form
+    internal sealed class AboutForm : FrostedForm
     {
         public AboutForm(ThemePalette palette)
         {
             Text = L.T("AboutTitle");
-            ClientSize = new Size(500, 390);
+            ClientSize = new Size(520, 420);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             StartPosition = FormStartPosition.CenterParent;
             Icon = AssetLoader.LoadAppIcon();
-            Font = new Font("Microsoft YaHei UI", 9F);
+            Font = UiFonts.Create(10F, FontStyle.Regular);
+            GlassPalette = palette;
 
-            var logo = new PictureBox { Image = AssetLoader.LoadLogo(), SizeMode = PictureBoxSizeMode.Zoom, Size = new Size(88, 88), Location = new Point(206, 24) };
-            var title = new Label { Text = L.T("AppTitle"), Font = new Font(Font.FontFamily, 20F, FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
-            title.SetBounds(30, 120, 440, 44);
+            var logo = new PictureBox { Image = AssetLoader.LoadLogo(), SizeMode = PictureBoxSizeMode.Zoom, Size = new Size(92, 92), Location = new Point(214, 24) };
+            var title = new Label { Text = L.T("AppTitle"), Font = UiFonts.Create(20F, FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
+            title.SetBounds(30, 126, 460, 48);
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
             var versionLabel = new Label { Text = string.Format(L.T("Version"), version.ToString(3)), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
-            versionLabel.SetBounds(30, 164, 440, 24);
+            versionLabel.SetBounds(30, 176, 460, 28);
             var body = new Label { Text = L.T("AboutBody"), AutoSize = false, TextAlign = ContentAlignment.TopCenter };
-            body.SetBounds(50, 202, 400, 76);
+            body.SetBounds(50, 216, 420, 88);
 
             var source = new ModernButton { Text = L.T("SourceCode"), Palette = palette, Primary = true };
-            source.SetBounds(85, 292, 205, 42);
+            source.SetBounds(88, 326, 214, 48);
             var close = new ModernButton { Text = L.T("Close"), Palette = palette };
-            close.SetBounds(305, 292, 110, 42);
+            close.SetBounds(316, 326, 116, 48);
             source.Click += delegate { Process.Start("https://github.com/LONGSANGDONTSLEEP/ZhutdownTimer"); };
             close.Click += delegate { Close(); };
 
@@ -202,7 +205,7 @@ namespace ZhutdownTimer
             Controls.Add(source);
             Controls.Add(close);
             ThemeApplier.Apply(this, palette);
-            NativeTheme.ApplyDarkTitleBar(this, palette.IsDark);
+            NativeTheme.ApplyWindowEffects(this, palette.IsDark);
             versionLabel.ForeColor = palette.Muted;
             body.ForeColor = palette.Muted;
         }

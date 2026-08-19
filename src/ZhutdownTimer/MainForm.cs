@@ -27,25 +27,25 @@ namespace ZhutdownTimer
         private readonly Label actionCaption = new Label();
         private readonly ModernComboBox actionBox = new ModernComboBox();
         private readonly Label scheduleCaption = new Label();
-        private readonly RadioButton countdownMode = new RadioButton();
-        private readonly RadioButton clockMode = new RadioButton();
+        private readonly GlassRadioButton countdownMode = new GlassRadioButton();
+        private readonly GlassRadioButton clockMode = new GlassRadioButton();
         private readonly Panel countdownPanel = new Panel();
         private readonly Panel clockPanel = new Panel();
-        private readonly NumericUpDown hours = new NumericUpDown();
-        private readonly NumericUpDown minutes = new NumericUpDown();
-        private readonly NumericUpDown seconds = new NumericUpDown();
+        private readonly GlassNumberInput hours = new GlassNumberInput();
+        private readonly GlassNumberInput minutes = new GlassNumberInput();
+        private readonly GlassNumberInput seconds = new GlassNumberInput();
         private readonly Label hoursLabel = new Label();
         private readonly Label minutesLabel = new Label();
         private readonly Label secondsLabel = new Label();
-        private readonly DateTimePicker clockPicker = new DateTimePicker();
+        private readonly GlassTimeInput clockPicker = new GlassTimeInput();
         private readonly Label repeatCaption = new Label();
         private readonly ModernComboBox repeatBox = new ModernComboBox();
         private readonly Label optionsCaption = new Label();
-        private readonly CheckBox forceClose = new CheckBox();
-        private readonly CheckBox preventSleep = new CheckBox();
-        private readonly CheckBox alwaysOnTop = new CheckBox();
-        private readonly CheckBox startWithWindows = new CheckBox();
-        private readonly CheckBox startMinimized = new CheckBox();
+        private readonly GlassCheckBox forceClose = new GlassCheckBox();
+        private readonly GlassCheckBox preventSleep = new GlassCheckBox();
+        private readonly GlassCheckBox alwaysOnTop = new GlassCheckBox();
+        private readonly GlassCheckBox startWithWindows = new GlassCheckBox();
+        private readonly GlassCheckBox startMinimized = new GlassCheckBox();
         private readonly Label confirmCaption = new Label();
         private readonly ModernComboBox confirmBox = new ModernComboBox();
         private readonly Label repeatHint = new Label();
@@ -81,11 +81,12 @@ namespace ZhutdownTimer
             L.Language = store.State.Settings.Language;
 
             Text = L.T("AppTitle");
-            ClientSize = new Size(980, 720);
-            MinimumSize = new Size(900, 680);
+            ClientSize = new Size(1040, 760);
+            MinimumSize = new Size(980, 720);
             StartPosition = FormStartPosition.CenterScreen;
-            Font = new Font("Microsoft YaHei UI", 9F);
+            Font = UiFonts.Create(10F, FontStyle.Regular);
             AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleDimensions = new SizeF(96F, 96F);
             Icon = AssetLoader.LoadAppIcon();
             KeyPreview = true;
 
@@ -113,20 +114,21 @@ namespace ZhutdownTimer
 
         private void BuildInterface()
         {
-            var header = new Panel { Height = 86, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
-            header.SetBounds(0, 0, ClientSize.Width, 86);
+            var header = new Panel { Height = 100, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, BackColor = Color.Transparent };
+            header.SetBounds(0, 0, ClientSize.Width, 100);
             logo.Image = AssetLoader.LoadLogo();
             logo.SizeMode = PictureBoxSizeMode.Zoom;
-            logo.SetBounds(24, 16, 54, 54);
-            titleLabel.Font = new Font(Font.FontFamily, 19F, FontStyle.Bold);
-            titleLabel.SetBounds(92, 15, 350, 36);
-            subtitleLabel.SetBounds(94, 52, 430, 24);
+            logo.SetBounds(28, 20, 60, 60);
+            titleLabel.Font = UiFonts.Create(21F, FontStyle.Bold);
+            titleLabel.SetBounds(104, 17, 390, 42);
+            subtitleLabel.Font = UiFonts.Create(9.6F, FontStyle.Regular);
+            subtitleLabel.SetBounds(106, 58, 460, 28);
 
             languageBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            languageBox.SetBounds(560, 27, 110, 30);
+            languageBox.SetBounds(594, 31, 138, 38);
             themeBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            themeBox.SetBounds(680, 27, 120, 30);
-            aboutButton.SetBounds(812, 23, 112, 38);
+            themeBox.SetBounds(742, 31, 130, 38);
+            aboutButton.SetBounds(886, 27, 126, 46);
 
             header.Controls.Add(logo);
             header.Controls.Add(titleLabel);
@@ -140,17 +142,18 @@ namespace ZhutdownTimer
             {
                 ColumnCount = 2,
                 RowCount = 1,
-                Padding = new Padding(24, 4, 24, 18)
+                Padding = new Padding(26, 4, 26, 22),
+                BackColor = Color.Transparent
             };
-            content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 59F));
-            content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41F));
+            content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 61.5F));
+            content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38.5F));
             content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            content.SetBounds(0, 86, ClientSize.Width, ClientSize.Height - 86);
+            content.SetBounds(0, 100, ClientSize.Width, ClientSize.Height - 100);
             content.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             scheduleCard.Dock = DockStyle.Fill;
-            scheduleCard.Margin = new Padding(0, 0, 10, 0);
+            scheduleCard.Margin = new Padding(0, 0, 11, 0);
             statusCard.Dock = DockStyle.Fill;
-            statusCard.Margin = new Padding(10, 0, 0, 0);
+            statusCard.Margin = new Padding(11, 0, 0, 0);
             content.Controls.Add(scheduleCard, 0, 0);
             content.Controls.Add(statusCard, 1, 0);
 
@@ -162,26 +165,26 @@ namespace ZhutdownTimer
 
         private void BuildScheduleCard()
         {
-            actionCaption.SetBounds(24, 20, 220, 22);
+            actionCaption.SetBounds(28, 22, 240, 28);
             actionBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            actionBox.SetBounds(24, 47, 470, 34);
+            actionBox.SetBounds(28, 54, 520, 40);
             actionBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-            scheduleCaption.SetBounds(24, 96, 220, 22);
-            countdownMode.SetBounds(24, 123, 132, 26);
-            clockMode.SetBounds(170, 123, 160, 26);
+            scheduleCaption.SetBounds(28, 108, 240, 28);
+            countdownMode.SetBounds(28, 139, 164, 32);
+            clockMode.SetBounds(202, 139, 190, 32);
 
-            countdownPanel.SetBounds(20, 154, 480, 54);
+            countdownPanel.SetBounds(24, 176, 530, 48);
             countdownPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            ConfigureNumber(hours, 4, 5, 168, 1);
-            hours.Width = 80;
-            hoursLabel.SetBounds(90, 12, 62, 22);
-            ConfigureNumber(minutes, 160, 5, 59, 0);
-            minutes.Width = 80;
-            minutesLabel.SetBounds(246, 12, 72, 22);
-            ConfigureNumber(seconds, 326, 5, 59, 0);
-            seconds.Width = 80;
-            secondsLabel.SetBounds(412, 12, 68, 22);
+            ConfigureNumber(hours, 4, 2, 168, 1);
+            hours.Width = 92;
+            hoursLabel.SetBounds(104, 8, 64, 30);
+            ConfigureNumber(minutes, 176, 2, 59, 0);
+            minutes.Width = 92;
+            minutesLabel.SetBounds(276, 8, 68, 30);
+            ConfigureNumber(seconds, 352, 2, 59, 0);
+            seconds.Width = 92;
+            secondsLabel.SetBounds(452, 8, 68, 30);
             countdownPanel.Controls.Add(hours);
             countdownPanel.Controls.Add(hoursLabel);
             countdownPanel.Controls.Add(minutes);
@@ -189,37 +192,34 @@ namespace ZhutdownTimer
             countdownPanel.Controls.Add(seconds);
             countdownPanel.Controls.Add(secondsLabel);
 
-            clockPanel.SetBounds(24, 158, 470, 48);
+            clockPanel.SetBounds(28, 178, 520, 46);
             clockPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            clockPicker.Format = DateTimePickerFormat.Custom;
-            clockPicker.CustomFormat = "HH:mm:ss";
-            clockPicker.ShowUpDown = true;
-            clockPicker.SetBounds(0, 2, 470, 34);
+            clockPicker.SetBounds(0, 0, 520, 40);
             clockPicker.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             clockPanel.Controls.Add(clockPicker);
 
-            repeatCaption.SetBounds(24, 217, 220, 22);
+            repeatCaption.SetBounds(28, 239, 240, 28);
             repeatBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            repeatBox.SetBounds(24, 244, 220, 34);
-            repeatHint.SetBounds(260, 242, 235, 48);
+            repeatBox.SetBounds(28, 270, 238, 40);
+            repeatHint.SetBounds(296, 266, 282, 58);
             repeatHint.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-            optionsCaption.SetBounds(24, 299, 250, 22);
-            forceClose.SetBounds(24, 328, 245, 26);
-            preventSleep.SetBounds(278, 328, 225, 26);
-            alwaysOnTop.SetBounds(24, 358, 245, 26);
-            startWithWindows.SetBounds(278, 358, 225, 26);
-            startMinimized.SetBounds(24, 388, 245, 26);
+            optionsCaption.SetBounds(28, 332, 280, 28);
+            forceClose.SetBounds(28, 365, 270, 32);
+            preventSleep.SetBounds(312, 365, 270, 32);
+            alwaysOnTop.SetBounds(28, 402, 270, 32);
+            startWithWindows.SetBounds(312, 402, 270, 32);
+            startMinimized.SetBounds(28, 439, 270, 32);
 
-            confirmCaption.SetBounds(24, 428, 180, 22);
+            confirmCaption.SetBounds(28, 484, 200, 32);
             confirmBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            confirmBox.SetBounds(205, 424, 190, 32);
+            confirmBox.SetBounds(235, 480, 210, 40);
 
             startButton.Primary = true;
-            startButton.SetBounds(24, 484, 310, 44);
+            startButton.SetBounds(28, 548, 340, 48);
             startButton.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             cancelButton.Danger = true;
-            cancelButton.SetBounds(348, 484, 146, 44);
+            cancelButton.SetBounds(384, 548, 164, 48);
             cancelButton.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
 
             scheduleCard.Controls.Add(actionCaption);
@@ -247,32 +247,32 @@ namespace ZhutdownTimer
 
         private void BuildStatusCard()
         {
-            stateBadge.Font = new Font(Font.FontFamily, 9F, FontStyle.Bold);
+            stateBadge.Font = UiFonts.Create(9.8F, FontStyle.Bold);
             stateBadge.TextAlign = ContentAlignment.MiddleCenter;
-            stateBadge.SetBounds(24, 28, 220, 32);
+            stateBadge.SetBounds(28, 26, 230, 36);
             remainingCaption.TextAlign = ContentAlignment.MiddleCenter;
-            remainingCaption.SetBounds(24, 94, 300, 24);
+            remainingCaption.SetBounds(24, 96, 300, 30);
             remainingCaption.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            remainingLabel.Font = new Font("Consolas", 26F, FontStyle.Bold);
+            remainingLabel.Font = new Font("Cascadia Mono", 24F, FontStyle.Bold);
             remainingLabel.Text = "00:00:00";
             remainingLabel.TextAlign = ContentAlignment.MiddleCenter;
-            remainingLabel.SetBounds(24, 118, 300, 76);
+            remainingLabel.SetBounds(24, 126, 300, 78);
             remainingLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progress.SetBounds(32, 204, 284, 9);
+            progress.SetBounds(32, 218, 284, 9);
             progress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-            nextCaption.SetBounds(28, 252, 280, 22);
-            actionLabel.Font = new Font(Font.FontFamily, 17F, FontStyle.Bold);
-            actionLabel.SetBounds(28, 278, 290, 40);
+            nextCaption.SetBounds(30, 270, 280, 28);
+            actionLabel.Font = UiFonts.Create(18F, FontStyle.Bold);
+            actionLabel.SetBounds(30, 301, 290, 48);
             actionLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            targetLabel.SetBounds(28, 322, 290, 58);
+            targetLabel.SetBounds(30, 352, 290, 66);
             targetLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            safetyHint.SetBounds(28, 392, 290, 84);
+            safetyHint.SetBounds(30, 437, 290, 94);
             safetyHint.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
-            historyButton.SetBounds(24, 484, 148, 44);
+            historyButton.SetBounds(28, 548, 148, 48);
             historyButton.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-            minimizeButton.SetBounds(184, 484, 140, 44);
+            minimizeButton.SetBounds(188, 548, 140, 48);
             minimizeButton.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
 
             statusCard.Controls.Add(stateBadge);
@@ -290,50 +290,50 @@ namespace ZhutdownTimer
 
         private void LayoutScheduleCard()
         {
-            int width = Math.Max(360, scheduleCard.ClientSize.Width);
-            actionBox.Width = width - 48;
-            countdownPanel.Width = width - 40;
-            clockPanel.Width = width - 48;
+            int width = Math.Max(520, scheduleCard.ClientSize.Width);
+            actionBox.Width = width - 56;
+            countdownPanel.Width = width - 48;
+            clockPanel.Width = width - 56;
             clockPicker.Width = clockPanel.Width;
-            repeatHint.Width = Math.Max(120, width - 284);
-            int buttonY = Math.Max(470, scheduleCard.ClientSize.Height - 68);
-            cancelButton.SetBounds(width - 194, buttonY, 170, 44);
-            startButton.SetBounds(24, buttonY, Math.Max(180, width - 232), 44);
+            repeatHint.Width = Math.Max(160, width - 320);
+            int buttonY = Math.Max(540, scheduleCard.ClientSize.Height - 78);
+            cancelButton.SetBounds(width - 192, buttonY, 164, 48);
+            startButton.SetBounds(28, buttonY, Math.Max(210, width - 236), 48);
         }
 
         private void LayoutStatusCard()
         {
             int width = Math.Max(300, statusCard.ClientSize.Width);
-            remainingCaption.SetBounds(16, 94, width - 32, 24);
-            remainingLabel.SetBounds(16, 118, width - 32, 76);
-            progress.SetBounds(24, 204, width - 48, 9);
-            actionLabel.Width = width - 56;
-            targetLabel.Width = width - 56;
-            safetyHint.Width = width - 56;
-            int buttonY = Math.Max(470, statusCard.ClientSize.Height - 68);
+            remainingCaption.SetBounds(18, 96, width - 36, 30);
+            remainingLabel.SetBounds(18, 126, width - 36, 78);
+            progress.SetBounds(28, 218, width - 56, 9);
+            stateBadge.Width = Math.Max(180, width - 56);
+            actionLabel.Width = width - 60;
+            targetLabel.Width = width - 60;
+            safetyHint.Width = width - 60;
+            int buttonY = Math.Max(540, statusCard.ClientSize.Height - 78);
             int gap = 12;
-            int buttonWidth = Math.Max(110, (width - 48 - gap) / 2);
-            historyButton.SetBounds(24, buttonY, buttonWidth, 44);
-            minimizeButton.SetBounds(24 + buttonWidth + gap, buttonY, buttonWidth, 44);
+            int buttonWidth = Math.Max(112, (width - 56 - gap) / 2);
+            historyButton.SetBounds(28, buttonY, buttonWidth, 48);
+            minimizeButton.SetBounds(28 + buttonWidth + gap, buttonY, buttonWidth, 48);
         }
 
-        private static void ConfigureNumber(NumericUpDown control, int x, int y, int maximum, int initial)
+        private static void ConfigureNumber(GlassNumberInput control, int x, int y, int maximum, int initial)
         {
             control.Minimum = 0;
             control.Maximum = maximum;
             control.Value = initial;
-            control.TextAlign = HorizontalAlignment.Center;
-            control.SetBounds(x, y, 102, 32);
+            control.SetBounds(x, y, 102, 40);
         }
 
         private void LayoutHeader(Panel header)
         {
             int width = header.ClientSize.Width;
-            aboutButton.SetBounds(width - 136, 23, 112, 38);
-            themeBox.SetBounds(width - 270, 27, 120, 30);
-            languageBox.SetBounds(width - 394, 27, 110, 30);
-            titleLabel.Width = Math.Max(260, width - 510);
-            subtitleLabel.Width = Math.Max(320, width - 520);
+            aboutButton.SetBounds(width - 154, 27, 126, 46);
+            themeBox.SetBounds(width - 298, 31, 130, 38);
+            languageBox.SetBounds(width - 446, 31, 138, 38);
+            titleLabel.Width = Math.Max(300, width - 560);
+            subtitleLabel.Width = Math.Max(350, width - 570);
         }
 
         private void BuildTray()
@@ -431,6 +431,7 @@ namespace ZhutdownTimer
             refreshingLocalization = true;
             try
             {
+            ApplyTypography();
             Text = L.T("AppTitle");
             titleLabel.Text = L.T("AppTitle");
             subtitleLabel.Text = L.T("Subtitle");
@@ -472,6 +473,34 @@ namespace ZhutdownTimer
             }
         }
 
+        private void ApplyTypography()
+        {
+            Font = UiFonts.Create(10F, FontStyle.Regular);
+            titleLabel.Font = UiFonts.Create(21F, FontStyle.Bold);
+            subtitleLabel.Font = UiFonts.Create(9.6F, FontStyle.Regular);
+            actionCaption.Font = scheduleCaption.Font = repeatCaption.Font = optionsCaption.Font = confirmCaption.Font = UiFonts.Create(10.2F, FontStyle.Bold);
+            remainingCaption.Font = nextCaption.Font = UiFonts.Create(10F, FontStyle.Regular);
+            repeatHint.Font = UiFonts.Create(8.9F, FontStyle.Regular);
+            targetLabel.Font = safetyHint.Font = UiFonts.Create(9.2F, FontStyle.Regular);
+            stateBadge.Font = UiFonts.Create(9.8F, FontStyle.Bold);
+            actionLabel.Font = UiFonts.Create(18F, FontStyle.Bold);
+            aboutButton.Font = startButton.Font = cancelButton.Font = historyButton.Font = minimizeButton.Font = UiFonts.Create(10F, FontStyle.Bold);
+            languageBox.Font = themeBox.Font = actionBox.Font = repeatBox.Font = confirmBox.Font = UiFonts.Create(10F, FontStyle.Regular);
+            countdownMode.Font = clockMode.Font = forceClose.Font = preventSleep.Font = alwaysOnTop.Font = startWithWindows.Font = startMinimized.Font = UiFonts.Create(9.6F, FontStyle.Regular);
+            hours.Font = minutes.Font = seconds.Font = clockPicker.Font = UiFonts.Create(10F, FontStyle.Regular);
+
+            remainingLabel.Font = new Font("Cascadia Mono", 24F, FontStyle.Bold);
+            remainingLabel.AutoEllipsis = false;
+            foreach (Label label in new[] { titleLabel, subtitleLabel, actionCaption, scheduleCaption, hoursLabel, minutesLabel, secondsLabel,
+                repeatCaption, repeatHint, optionsCaption, confirmCaption, stateBadge, remainingCaption, nextCaption,
+                actionLabel, targetLabel, safetyHint })
+            {
+                label.AutoEllipsis = true;
+                label.UseCompatibleTextRendering = false;
+            }
+            repeatHint.AutoEllipsis = targetLabel.AutoEllipsis = safetyHint.AutoEllipsis = false;
+        }
+
         private void RefreshComboItems()
         {
             int action = Math.Max(0, actionBox.SelectedIndex);
@@ -503,7 +532,7 @@ namespace ZhutdownTimer
         {
             palette = ThemePalette.Create(ThemeDetector.UseDark(store.State.Settings.Theme));
             ThemeApplier.Apply(this, palette);
-            NativeTheme.ApplyDarkTitleBar(this, palette.IsDark);
+            NativeTheme.ApplyWindowEffects(this, palette.IsDark);
             titleLabel.ForeColor = palette.Text;
             subtitleLabel.ForeColor = palette.Muted;
             repeatHint.ForeColor = palette.Muted;
@@ -517,6 +546,11 @@ namespace ZhutdownTimer
             aboutButton.Palette = startButton.Palette = cancelButton.Palette = historyButton.Palette = minimizeButton.Palette = palette;
             progress.Palette = palette;
             Invalidate(true);
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            AtmosphereRenderer.Draw(e.Graphics, ClientRectangle, palette ?? ThemePalette.Create(false));
         }
 
         private void LanguageChanged(object sender, EventArgs e)
@@ -896,13 +930,28 @@ namespace ZhutdownTimer
                 point.Offset(parent.Location);
                 parent = parent.Parent;
             }
-            Rectangle field = new Rectangle(point.X + 2, point.Y + 2, Math.Max(1, combo.Width - 31), combo.Height - 4);
-            using (var background = new SolidBrush(combo.Enabled ? Color.White : Color.FromArgb(245, 245, 245)))
-                graphics.FillRectangle(background, field);
-            Rectangle bounds = new Rectangle(point.X + 6, point.Y + 2, Math.Max(1, combo.Width - 38), combo.Height - 4);
-            Color color = combo.Enabled ? Color.FromArgb(30, 41, 59) : Color.FromArgb(100, 116, 139);
+            ThemePalette p = palette ?? ThemePalette.Create(false);
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            Rectangle field = new Rectangle(point.X, point.Y, Math.Max(1, combo.Width - 1), Math.Max(1, combo.Height - 1));
+            using (var outside = new SolidBrush(p.Surface)) graphics.FillRectangle(outside, new Rectangle(point, combo.Size));
+            using (var path = UiShape.Rounded(field, 10))
+            using (var background = new SolidBrush(p.Field))
+            using (var border = new Pen(p.Border))
+            {
+                graphics.FillPath(background, path);
+                graphics.DrawPath(border, path);
+            }
+            Rectangle bounds = new Rectangle(point.X + 13, point.Y + 1, Math.Max(1, combo.Width - 52), combo.Height - 2);
+            Color color = combo.Enabled ? p.Text : p.Muted;
             TextRenderer.DrawText(graphics, combo.GetItemText(combo.SelectedItem), combo.Font, bounds, color,
                 TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+            int centerX = point.X + combo.Width - 20;
+            int centerY = point.Y + combo.Height / 2;
+            using (var pen = new Pen(combo.Enabled ? p.Muted : p.Border, 1.6F))
+            {
+                graphics.DrawLine(pen, centerX - 4, centerY - 2, centerX, centerY + 2);
+                graphics.DrawLine(pen, centerX, centerY + 2, centerX + 4, centerY - 2);
+            }
         }
 
         protected override void Dispose(bool disposing)
