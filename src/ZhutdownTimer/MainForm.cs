@@ -16,17 +16,17 @@ namespace ZhutdownTimer
         private readonly ToolStripMenuItem trayExit = new ToolStripMenuItem();
 
         private readonly PictureBox logo = new PictureBox();
-        private readonly Label titleLabel = new Label();
-        private readonly Label subtitleLabel = new Label();
+        private readonly GlassLabel titleLabel = new GlassLabel();
+        private readonly GlassLabel subtitleLabel = new GlassLabel();
         private readonly ModernComboBox languageBox = new ModernComboBox();
         private readonly ModernComboBox themeBox = new ModernComboBox();
         private readonly ModernButton aboutButton = new ModernButton();
 
         private readonly CardPanel scheduleCard = new CardPanel();
         private readonly CardPanel statusCard = new CardPanel();
-        private readonly Label actionCaption = new Label();
+        private readonly GlassLabel actionCaption = new GlassLabel();
         private readonly ModernComboBox actionBox = new ModernComboBox();
-        private readonly Label scheduleCaption = new Label();
+        private readonly GlassLabel scheduleCaption = new GlassLabel();
         private readonly GlassRadioButton countdownMode = new GlassRadioButton();
         private readonly GlassRadioButton clockMode = new GlassRadioButton();
         private readonly Panel countdownPanel = new Panel();
@@ -34,32 +34,32 @@ namespace ZhutdownTimer
         private readonly GlassNumberInput hours = new GlassNumberInput();
         private readonly GlassNumberInput minutes = new GlassNumberInput();
         private readonly GlassNumberInput seconds = new GlassNumberInput();
-        private readonly Label hoursLabel = new Label();
-        private readonly Label minutesLabel = new Label();
-        private readonly Label secondsLabel = new Label();
+        private readonly GlassLabel hoursLabel = new GlassLabel();
+        private readonly GlassLabel minutesLabel = new GlassLabel();
+        private readonly GlassLabel secondsLabel = new GlassLabel();
         private readonly GlassTimeInput clockPicker = new GlassTimeInput();
-        private readonly Label repeatCaption = new Label();
+        private readonly GlassLabel repeatCaption = new GlassLabel();
         private readonly ModernComboBox repeatBox = new ModernComboBox();
-        private readonly Label optionsCaption = new Label();
+        private readonly GlassLabel optionsCaption = new GlassLabel();
         private readonly GlassCheckBox forceClose = new GlassCheckBox();
         private readonly GlassCheckBox preventSleep = new GlassCheckBox();
         private readonly GlassCheckBox alwaysOnTop = new GlassCheckBox();
         private readonly GlassCheckBox startWithWindows = new GlassCheckBox();
         private readonly GlassCheckBox startMinimized = new GlassCheckBox();
-        private readonly Label confirmCaption = new Label();
+        private readonly GlassLabel confirmCaption = new GlassLabel();
         private readonly ModernComboBox confirmBox = new ModernComboBox();
-        private readonly Label repeatHint = new Label();
+        private readonly GlassLabel repeatHint = new GlassLabel();
         private readonly ModernButton startButton = new ModernButton();
         private readonly ModernButton cancelButton = new ModernButton();
 
-        private readonly Label stateBadge = new Label();
-        private readonly Label remainingCaption = new Label();
-        private readonly Label remainingLabel = new Label();
+        private readonly GlassLabel stateBadge = new GlassLabel();
+        private readonly GlassLabel remainingCaption = new GlassLabel();
+        private readonly GlassLabel remainingLabel = new GlassLabel();
         private readonly FlatProgressBar progress = new FlatProgressBar();
-        private readonly Label nextCaption = new Label();
-        private readonly Label actionLabel = new Label();
-        private readonly Label targetLabel = new Label();
-        private readonly Label safetyHint = new Label();
+        private readonly GlassLabel nextCaption = new GlassLabel();
+        private readonly GlassLabel actionLabel = new GlassLabel();
+        private readonly GlassLabel targetLabel = new GlassLabel();
+        private readonly GlassLabel safetyHint = new GlassLabel();
         private readonly ModernButton historyButton = new ModernButton();
         private readonly ModernButton minimizeButton = new ModernButton();
 
@@ -119,10 +119,10 @@ namespace ZhutdownTimer
             logo.Image = AssetLoader.LoadLogo();
             logo.SizeMode = PictureBoxSizeMode.Zoom;
             logo.SetBounds(28, 20, 60, 60);
-            titleLabel.Font = UiFonts.Create(21F, FontStyle.Bold);
-            titleLabel.SetBounds(104, 17, 390, 42);
+            titleLabel.Font = UiFonts.Create(20.5F, FontStyle.Regular);
+            titleLabel.SetBounds(104, 8, 390, 52);
             subtitleLabel.Font = UiFonts.Create(9.6F, FontStyle.Regular);
-            subtitleLabel.SetBounds(106, 58, 460, 28);
+            subtitleLabel.SetBounds(106, 60, 460, 28);
 
             languageBox.DropDownStyle = ComboBoxStyle.DropDownList;
             languageBox.SetBounds(594, 31, 138, 38);
@@ -476,7 +476,7 @@ namespace ZhutdownTimer
         private void ApplyTypography()
         {
             Font = UiFonts.Create(10F, FontStyle.Regular);
-            titleLabel.Font = UiFonts.Create(21F, FontStyle.Bold);
+            titleLabel.Font = UiFonts.Create(20.5F, FontStyle.Regular);
             subtitleLabel.Font = UiFonts.Create(9.6F, FontStyle.Regular);
             actionCaption.Font = scheduleCaption.Font = repeatCaption.Font = optionsCaption.Font = confirmCaption.Font = UiFonts.Create(10.2F, FontStyle.Bold);
             remainingCaption.Font = nextCaption.Font = UiFonts.Create(10F, FontStyle.Regular);
@@ -496,8 +496,9 @@ namespace ZhutdownTimer
                 actionLabel, targetLabel, safetyHint })
             {
                 label.AutoEllipsis = true;
-                label.UseCompatibleTextRendering = false;
+                label.UseCompatibleTextRendering = true;
             }
+            titleLabel.AutoEllipsis = subtitleLabel.AutoEllipsis = false;
             repeatHint.AutoEllipsis = targetLabel.AutoEllipsis = safetyHint.AutoEllipsis = false;
         }
 

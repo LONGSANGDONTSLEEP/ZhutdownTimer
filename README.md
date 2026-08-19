@@ -31,8 +31,8 @@
 
 | 文件 | 适用场景 |
 |---|---|
-| `ZhutdownTimer-Setup-v2.1.0.exe` | 推荐。当前用户安装，带开始菜单和标准卸载入口，不需要管理员权限 |
-| `ZhutdownTimer-portable-v2.1.0.zip` | 便携版。解压后直接运行 |
+| `ZhutdownTimer-Setup-v2.1.1.exe` | 推荐。当前用户安装，带开始菜单和标准卸载入口，不需要管理员权限 |
+| `ZhutdownTimer-portable-v2.1.1.zip` | 便携版。解压后直接运行 |
 | `SHA256SUMS.txt` | 用于核验下载文件是否完整 |
 
 系统要求：Windows 10/11，.NET Framework 4.8。安装程序与便携版功能相同。

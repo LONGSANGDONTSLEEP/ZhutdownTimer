@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace ZhutdownTimer
@@ -75,6 +76,47 @@ namespace ZhutdownTimer
             path.AddArc(rectangle.Left, rectangle.Bottom - diameter, diameter, diameter, 90, 90);
             path.CloseFigure();
             return path;
+        }
+    }
+
+    internal static class UiText
+    {
+        public static void Draw(Graphics graphics, string text, Font font, Color color, Rectangle bounds,
+            ContentAlignment alignment, bool wrap, bool ellipsis)
+        {
+            graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            using (var brush = new SolidBrush(color))
+            using (var format = new StringFormat(StringFormat.GenericTypographic))
+            {
+                format.Alignment = alignment == ContentAlignment.TopCenter || alignment == ContentAlignment.MiddleCenter || alignment == ContentAlignment.BottomCenter
+                    ? StringAlignment.Center
+                    : alignment == ContentAlignment.TopRight || alignment == ContentAlignment.MiddleRight || alignment == ContentAlignment.BottomRight
+                        ? StringAlignment.Far : StringAlignment.Near;
+                format.LineAlignment = alignment == ContentAlignment.MiddleLeft || alignment == ContentAlignment.MiddleCenter || alignment == ContentAlignment.MiddleRight
+                    ? StringAlignment.Center
+                    : alignment == ContentAlignment.BottomLeft || alignment == ContentAlignment.BottomCenter || alignment == ContentAlignment.BottomRight
+                        ? StringAlignment.Far : StringAlignment.Near;
+                if (!wrap) format.FormatFlags |= StringFormatFlags.NoWrap;
+                format.Trimming = ellipsis ? StringTrimming.EllipsisCharacter : StringTrimming.None;
+                graphics.DrawString(text ?? string.Empty, font, brush, bounds, format);
+            }
+        }
+    }
+
+    internal sealed class GlassLabel : Label
+    {
+        public GlassLabel()
+        {
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.SupportsTransparentBackColor, true);
+            BackColor = Color.Transparent;
+            UseCompatibleTextRendering = true;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            UiText.Draw(e.Graphics, Text, Font, Enabled ? ForeColor : SystemColors.GrayText, ClientRectangle,
+                TextAlign, !AutoEllipsis, AutoEllipsis);
         }
     }
 
@@ -279,6 +321,7 @@ namespace ZhutdownTimer
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.Transparent;
             editor.BorderStyle = BorderStyle.None;
+            editor.AutoSize = false;
             editor.TextAlign = HorizontalAlignment.Center;
             editor.Text = "0";
             editor.MaxLength = 3;
@@ -380,6 +423,7 @@ namespace ZhutdownTimer
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             BackColor = Color.Transparent;
             editor.BorderStyle = BorderStyle.None;
+            editor.AutoSize = false;
             editor.TextAlign = HorizontalAlignment.Left;
             editor.Text = time.ToString("HH:mm:ss");
             editor.MaxLength = 8;
@@ -468,8 +512,8 @@ namespace ZhutdownTimer
                 }
             }
             Rectangle textBounds = new Rectangle(29, 0, Math.Max(1, Width - 30), Height);
-            TextRenderer.DrawText(e.Graphics, Text, Font, textBounds, Enabled ? p.Text : p.Muted,
-                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+            UiText.Draw(e.Graphics, Text, Font, Enabled ? p.Text : p.Muted, textBounds,
+                ContentAlignment.MiddleLeft, false, true);
         }
     }
 
@@ -499,8 +543,8 @@ namespace ZhutdownTimer
             if (Checked)
                 using (var dot = new SolidBrush(p.Accent)) e.Graphics.FillEllipse(dot, new Rectangle(circle.X + 5, circle.Y + 5, 9, 9));
             Rectangle textBounds = new Rectangle(29, 0, Math.Max(1, Width - 30), Height);
-            TextRenderer.DrawText(e.Graphics, Text, Font, textBounds, Enabled ? p.Text : p.Muted,
-                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+            UiText.Draw(e.Graphics, Text, Font, Enabled ? p.Text : p.Muted, textBounds,
+                ContentAlignment.MiddleLeft, false, true);
         }
     }
 
