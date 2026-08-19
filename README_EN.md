@@ -15,6 +15,7 @@
 ## Highlights
 
 - Shut down, restart, sleep, hibernate, lock or sign out
+- Frosted-glass interface with ambient lighting, translucent cards and Windows 11 acrylic integration
 - Countdown and time-of-day schedules, with daily/weekday/weekend recurrence
 - Instant Chinese/English switching
 - Light, dark and system themes
@@ -29,8 +30,8 @@ Open [the latest GitHub Release](https://github.com/LONGSANGDONTSLEEP/ZhutdownTi
 
 | File | Use |
 |---|---|
-| `ZhutdownTimer-Setup-v2.0.0.exe` | Recommended per-user installer with Start Menu and uninstall entries; no admin rights required |
-| `ZhutdownTimer-portable-v2.0.0.zip` | Portable build; extract and run |
+| `ZhutdownTimer-Setup-v2.1.0.exe` | Recommended per-user installer with Start Menu and uninstall entries; no admin rights required |
+| `ZhutdownTimer-portable-v2.1.0.zip` | Portable build; extract and run |
 | `SHA256SUMS.txt` | SHA-256 integrity checks |
 
 Requirements: Windows 10/11 and .NET Framework 4.8.

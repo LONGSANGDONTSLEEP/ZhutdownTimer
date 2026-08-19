@@ -250,16 +250,24 @@ namespace ZhutdownTimer
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr window, int attribute, ref int value, int size);
 
-        public static void ApplyDarkTitleBar(Form form, bool dark)
+        public static void ApplyWindowEffects(Form form, bool dark)
         {
             try
             {
                 int value = dark ? 1 : 0;
                 int result = DwmSetWindowAttribute(form.Handle, 20, ref value, sizeof(int));
                 if (result != 0) DwmSetWindowAttribute(form.Handle, 19, ref value, sizeof(int));
+
+                // Windows 11: rounded frame and transient-window backdrop (acrylic).
+                // Unsupported attributes are ignored on older Windows versions.
+                int roundedCorners = 2;
+                DwmSetWindowAttribute(form.Handle, 33, ref roundedCorners, sizeof(int));
+                int backdrop = 3;
+                DwmSetWindowAttribute(form.Handle, 38, ref backdrop, sizeof(int));
             }
             catch { }
         }
+
     }
 
     internal static class AssetLoader

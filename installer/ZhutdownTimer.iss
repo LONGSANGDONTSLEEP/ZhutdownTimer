@@ -1,6 +1,6 @@
 #define MyAppName "Zhutdown Timer"
 #ifndef MyAppVersion
-  #define MyAppVersion "2.0.0"
+  #define MyAppVersion "2.1.0"
 #endif
 #define MyAppPublisher "LONGSANGDONTSLEEP"
 #define MyAppURL "https://github.com/LONGSANGDONTSLEEP/ZhutdownTimer"
