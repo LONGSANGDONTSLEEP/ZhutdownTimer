@@ -9,8 +9,8 @@ namespace ZhutdownTimer
     internal sealed class ExecutionPromptForm : FrostedForm
     {
         private readonly Timer timer = new Timer();
-        private readonly Label countdownLabel = new Label();
-        private readonly Label bodyLabel = new Label();
+        private readonly GlassLabel countdownLabel = new GlassLabel();
+        private readonly GlassLabel bodyLabel = new GlassLabel();
         private int secondsLeft;
 
         public ExecutionPromptForm(PowerAction action, int seconds, ThemePalette palette)
@@ -28,7 +28,7 @@ namespace ZhutdownTimer
             Font = UiFonts.Create(10F, FontStyle.Regular);
             GlassPalette = palette;
 
-            var title = new Label
+            var title = new GlassLabel
             {
                 Text = string.Format(L.T("ConfirmTitle"), L.Action(action)),
                 Font = UiFonts.Create(18F, FontStyle.Bold),
@@ -183,12 +183,12 @@ namespace ZhutdownTimer
             GlassPalette = palette;
 
             var logo = new PictureBox { Image = AssetLoader.LoadLogo(), SizeMode = PictureBoxSizeMode.Zoom, Size = new Size(92, 92), Location = new Point(214, 24) };
-            var title = new Label { Text = L.T("AppTitle"), Font = UiFonts.Create(20F, FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
+            var title = new GlassLabel { Text = L.T("AppTitle"), Font = UiFonts.Create(20F, FontStyle.Bold), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
             title.SetBounds(30, 126, 460, 48);
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
-            var versionLabel = new Label { Text = string.Format(L.T("Version"), version.ToString(3)), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
+            var versionLabel = new GlassLabel { Text = string.Format(L.T("Version"), version.ToString(3)), AutoSize = false, TextAlign = ContentAlignment.MiddleCenter };
             versionLabel.SetBounds(30, 176, 460, 28);
-            var body = new Label { Text = L.T("AboutBody"), AutoSize = false, TextAlign = ContentAlignment.TopCenter };
+            var body = new GlassLabel { Text = L.T("AboutBody"), AutoSize = false, TextAlign = ContentAlignment.TopCenter };
             body.SetBounds(50, 216, 420, 88);
 
             var source = new ModernButton { Text = L.T("SourceCode"), Palette = palette, Primary = true };

@@ -132,6 +132,24 @@ namespace ZhutdownTimer
                             control.DrawToBitmap(bitmap, control.Bounds);
                         form.DrawPreviewOverlays(bitmap);
                         string suffix = store.State.Settings.Language == AppLanguage.English ? "en" : "zh";
+                        if (suffix == "zh")
+                        {
+                            using (Graphics titleGraphics = Graphics.FromImage(bitmap))
+                            using (Font titleFont = new Font("Microsoft YaHei UI", 20.5F, FontStyle.Regular, GraphicsUnit.Point))
+                            using (var titleBrush = new SolidBrush(ThemePalette.Create(ThemeDetector.UseDark(store.State.Settings.Theme)).Text))
+                            using (var titleFormat = new StringFormat(StringFormat.GenericTypographic))
+                            {
+                                titleGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                                titleFormat.FormatFlags |= StringFormatFlags.NoWrap;
+                                using (var titlePath = new System.Drawing.Drawing2D.GraphicsPath())
+                                {
+                                    float emSize = titleFont.SizeInPoints * titleGraphics.DpiY / 72F;
+                                    titlePath.AddString("定时电源助手", titleFont.FontFamily, (int)titleFont.Style,
+                                        emSize, new PointF(104, 8), titleFormat);
+                                    titleGraphics.FillPath(titleBrush, titlePath);
+                                }
+                            }
+                        }
                         string path = Path.Combine(Environment.CurrentDirectory, "ui-preview-" + suffix + ".png");
                         bitmap.Save(path, System.Drawing.Imaging.ImageFormat.Png);
                         Console.WriteLine(path);
